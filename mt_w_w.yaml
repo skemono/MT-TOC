@@ -57,45 +57,98 @@ delta:
       tape_output: '#'
       tape_displacement: S
 
-  # Q1 → avanzar hasta # (ignorando a y b)
+  # Q0 → si veo X al inicio, avanzar para buscar siguiente símbolo no marcado
+  - params:
+      initial_state: '0'
+      mem_cache_value:
+      tape_input: X
+    output:
+      final_state: '0'
+      mem_cache_value:
+      tape_output: X
+      tape_displacement: R
+
+  # Q1 → avanzar hasta # (ignorando a y b) - CON MEMORIA 'a'
   - params:
       initial_state: '1'
-      mem_cache_value:
+      mem_cache_value: a
       tape_input: a
     output:
       final_state: '1'
-      mem_cache_value:
+      mem_cache_value: a
       tape_output: a
       tape_displacement: R
 
   - params:
       initial_state: '1'
-      mem_cache_value:
+      mem_cache_value: a
       tape_input: b
     output:
       final_state: '1'
-      mem_cache_value:
+      mem_cache_value: a
       tape_output: b
       tape_displacement: R
 
   - params:
       initial_state: '1'
-      mem_cache_value:
+      mem_cache_value: a
       tape_input: X
     output:
       final_state: '1'
-      mem_cache_value:
+      mem_cache_value: a
       tape_output: X
       tape_displacement: R
 
-  # Al encontrar # → pasar a Q2
+  # Al encontrar # → pasar a Q2 - MANTENER MEMORIA 'a'
   - params:
       initial_state: '1'
-      mem_cache_value:
+      mem_cache_value: a
       tape_input: '#'
     output:
       final_state: '2'
-      mem_cache_value:
+      mem_cache_value: a
+      tape_output: '#'
+      tape_displacement: R
+
+  # Q1 → avanzar hasta # (ignorando a y b) - CON MEMORIA 'b'
+  - params:
+      initial_state: '1'
+      mem_cache_value: b
+      tape_input: a
+    output:
+      final_state: '1'
+      mem_cache_value: b
+      tape_output: a
+      tape_displacement: R
+
+  - params:
+      initial_state: '1'
+      mem_cache_value: b
+      tape_input: b
+    output:
+      final_state: '1'
+      mem_cache_value: b
+      tape_output: b
+      tape_displacement: R
+
+  - params:
+      initial_state: '1'
+      mem_cache_value: b
+      tape_input: X
+    output:
+      final_state: '1'
+      mem_cache_value: b
+      tape_output: X
+      tape_displacement: R
+
+  # Al encontrar # → pasar a Q2 - MANTENER MEMORIA 'b'
+  - params:
+      initial_state: '1'
+      mem_cache_value: b
+      tape_input: '#'
+    output:
+      final_state: '2'
+      mem_cache_value: b
       tape_output: '#'
       tape_displacement: R
 
@@ -120,6 +173,27 @@ delta:
       tape_output: X
       tape_displacement: L
 
+  # Q2 → si encontramos X después de #, significa que ya comparamos todo → aceptar
+  - params:
+      initial_state: '2'
+      mem_cache_value: a
+      tape_input: X
+    output:
+      final_state: '5'
+      mem_cache_value:
+      tape_output: X
+      tape_displacement: S
+
+  - params:
+      initial_state: '2'
+      mem_cache_value: b
+      tape_input: X
+    output:
+      final_state: '5'
+      mem_cache_value:
+      tape_output: X
+      tape_displacement: S
+
   # Q3 → volver al inicio hasta encontrar un X
   - params:
       initial_state: '3'
@@ -143,6 +217,49 @@ delta:
 
   - params:
       initial_state: '3'
+      mem_cache_value:
+      tape_input: '#'
+    output:
+      final_state: '3'
+      mem_cache_value:
+      tape_output: '#'
+      tape_displacement: L
+
+  # Q3 → saltar X del lado derecho
+  - params:
+      initial_state: '3'
+      mem_cache_value:
+      tape_input: X
+    output:
+      final_state: '4'
+      mem_cache_value:
+      tape_output: X
+      tape_displacement: L
+
+  # Q4 → seguir retrocediendo hasta encontrar X del lado izquierdo
+  - params:
+      initial_state: '4'
+      mem_cache_value:
+      tape_input: a
+    output:
+      final_state: '4'
+      mem_cache_value:
+      tape_output: a
+      tape_displacement: L
+
+  - params:
+      initial_state: '4'
+      mem_cache_value:
+      tape_input: b
+    output:
+      final_state: '4'
+      mem_cache_value:
+      tape_output: b
+      tape_displacement: L
+
+  # Q4 → al encontrar X del lado izquierdo, avanzar y volver a Q0
+  - params:
+      initial_state: '4'
       mem_cache_value:
       tape_input: X
     output:
