@@ -28,7 +28,7 @@ delta:
       tape_output: a
       tape_displacement: R
 
-  # En q0, si leo 'b' directamente, rechazo (no hay transición) -> se queda sin transición
+
 
   # En q1, mientras lea a o b, sigo avanzando hasta llegar al blank
   - params:
@@ -51,7 +51,7 @@ delta:
       tape_output: b
       tape_displacement: R
 
-  # En q1, si leo blank, paso al estado final q5 (acepto)
+  # En q1, si leo blank, paso al estado final
   - params:
       initial_state: '1'
       mem_cache_value:
@@ -63,7 +63,8 @@ delta:
       tape_displacement: S
 
 simulation_strings:
-  - aab
+  - aab#aab
   - abbbb
   - bbaa
   - b
+  - ab#ab

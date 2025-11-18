@@ -16,3 +16,8 @@ python main.py mt_w_w.yaml
 
 # Ejemplo general:
 python main.py <nombre_del_archivo>.yaml
+
+
+
+## Link de YT:
+https://youtu.be/-WM0C10m-7o
