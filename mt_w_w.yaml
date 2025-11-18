@@ -1,0 +1,159 @@
+---
+q_states:
+  q_list:
+    - '0'
+    - '1'
+    - '2'
+    - '3'
+    - '4'
+    - '5'
+  initial: '0'
+  final: '5'
+
+alphabet:
+  - a
+  - b
+  - '#'
+
+tape_alphabet:
+  - a
+  - b
+  - '#'
+  - X
+  -   # blank
+
+delta:
+
+  # Q0 → marcar primer símbolo (a)
+  - params:
+      initial_state: '0'
+      mem_cache_value:
+      tape_input: a
+    output:
+      final_state: '1'
+      mem_cache_value: a
+      tape_output: X
+      tape_displacement: R
+
+  # Q0 → primer símbolo (b)
+  - params:
+      initial_state: '0'
+      mem_cache_value:
+      tape_input: b
+    output:
+      final_state: '1'
+      mem_cache_value: b
+      tape_output: X
+      tape_displacement: R
+
+  # Q0 → si veo # ya no hay más lado izquierdo → aceptar
+  - params:
+      initial_state: '0'
+      mem_cache_value:
+      tape_input: '#'
+    output:
+      final_state: '5'
+      mem_cache_value:
+      tape_output: '#'
+      tape_displacement: S
+
+  # Q1 → avanzar hasta # (ignorando a y b)
+  - params:
+      initial_state: '1'
+      mem_cache_value:
+      tape_input: a
+    output:
+      final_state: '1'
+      mem_cache_value:
+      tape_output: a
+      tape_displacement: R
+
+  - params:
+      initial_state: '1'
+      mem_cache_value:
+      tape_input: b
+    output:
+      final_state: '1'
+      mem_cache_value:
+      tape_output: b
+      tape_displacement: R
+
+  - params:
+      initial_state: '1'
+      mem_cache_value:
+      tape_input: X
+    output:
+      final_state: '1'
+      mem_cache_value:
+      tape_output: X
+      tape_displacement: R
+
+  # Al encontrar # → pasar a Q2
+  - params:
+      initial_state: '1'
+      mem_cache_value:
+      tape_input: '#'
+    output:
+      final_state: '2'
+      mem_cache_value:
+      tape_output: '#'
+      tape_displacement: R
+
+  # Q2 → comparar símbolo mem con símbolo en el lado derecho
+  - params:
+      initial_state: '2'
+      mem_cache_value: a
+      tape_input: a
+    output:
+      final_state: '3'
+      mem_cache_value:
+      tape_output: X
+      tape_displacement: L
+
+  - params:
+      initial_state: '2'
+      mem_cache_value: b
+      tape_input: b
+    output:
+      final_state: '3'
+      mem_cache_value:
+      tape_output: X
+      tape_displacement: L
+
+  # Q3 → volver al inicio hasta encontrar un X
+  - params:
+      initial_state: '3'
+      mem_cache_value:
+      tape_input: a
+    output:
+      final_state: '3'
+      mem_cache_value:
+      tape_output: a
+      tape_displacement: L
+
+  - params:
+      initial_state: '3'
+      mem_cache_value:
+      tape_input: b
+    output:
+      final_state: '3'
+      mem_cache_value:
+      tape_output: b
+      tape_displacement: L
+
+  - params:
+      initial_state: '3'
+      mem_cache_value:
+      tape_input: X
+    output:
+      final_state: '0'
+      mem_cache_value:
+      tape_output: X
+      tape_displacement: R
+
+simulation_strings:
+  - aab#aab
+  - ab#ab
+  - abbababa#aba
+  - aa#aa
+  - ab#ba

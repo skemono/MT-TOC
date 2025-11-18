@@ -1,0 +1,69 @@
+---
+q_states:
+  q_list:
+    - '0'
+    - '1'
+    - '5'
+  initial: '0'
+  final: '5'
+
+alphabet:
+  - a
+  - b
+
+tape_alphabet:
+  - a
+  - b
+  -   # blank
+
+delta:
+  # Si estoy en q0, memoria vacía, leo 'a', paso a q1 y sigo
+  - params:
+      initial_state: '0'
+      mem_cache_value:
+      tape_input: a
+    output:
+      final_state: '1'
+      mem_cache_value:
+      tape_output: a
+      tape_displacement: R
+
+  # En q0, si leo 'b' directamente, rechazo (no hay transición) -> se queda sin transición
+
+  # En q1, mientras lea a o b, sigo avanzando hasta llegar al blank
+  - params:
+      initial_state: '1'
+      mem_cache_value:
+      tape_input: a
+    output:
+      final_state: '1'
+      mem_cache_value:
+      tape_output: a
+      tape_displacement: R
+
+  - params:
+      initial_state: '1'
+      mem_cache_value:
+      tape_input: b
+    output:
+      final_state: '1'
+      mem_cache_value:
+      tape_output: b
+      tape_displacement: R
+
+  # En q1, si leo blank, paso al estado final q5 (acepto)
+  - params:
+      initial_state: '1'
+      mem_cache_value:
+      tape_input:
+    output:
+      final_state: '5'
+      mem_cache_value:
+      tape_output:
+      tape_displacement: S
+
+simulation_strings:
+  - aab
+  - abbbb
+  - bbaa
+  - b
